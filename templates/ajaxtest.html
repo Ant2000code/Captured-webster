@@ -1,0 +1,16 @@
+<h2>Hello world corona suffered</h2>
+<button>test me</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $.post("ajaxtest.html",
+    {
+      id:2
+    },
+    function(data,status){
+      alert("Data: " + data + "\nStatus: " + status);
+    });
+  });
+});
+</script>

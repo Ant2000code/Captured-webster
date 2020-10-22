@@ -15,8 +15,8 @@ def home(request):
     return render(request,'index.html',{'que':que, 'ans':ans})
 
 def solution(request, id):
-    ans = Answer.objects.get(pk=id)
     que = Question.objects.get(pk=id)
+    ans = Answer.objects.get(question=que)
     return render(request, 'solution.html', {'ans': ans, 'que': que})
 
 def login(request):
