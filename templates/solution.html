@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solution</title>
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'solution.css' %}">
+    
+</head>
+<body>
+
+    <!-- navbar code  -->
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#026670;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Ask me Anything</a>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <button class="openbtn" onclick="openNav()">&#9776;</button>
+                        </li>
+                        
+                        <li class="nav-item ">
+                          <a class="nav-link" href="dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
+                      </li>
+                        <li class="nav-item ">
+                          <a class="nav-link" href="logout">Logout<span class="sr-only">(current)</span></a>
+                      </li>
+                      
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact us</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    
+
+<!--Dashboard sidebar-->
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#recent topics">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
+    <a href="#notify">Science</a>
+    <a href="#">Social Science</a>
+    <a href="#">Language and Literature</a>
+    <a href="#">Miscellaneous</a>
+  </div>
+</div>
+  <script>
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+      document.getElementById("main").style.marginLeft = "250px";
+    }
+    
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+    }
+    
+    </script>
+
+
+    <!--solution-->
+<div class="container">
+<div class="card">
+    
+    <p class="ques">{{ans.question.quesText}}</p>
+    <p>Posted By: {{que.postedBy}} </p>
+    <p>Topic: {{que.topic}} </p>
+    <p>Time:{{que.time}}</p>
+    <hr>
+    <p>Answered By: {{ans.answeredBy}}</p>
+    
+    <p class="ans">{{ans.ansText}}</p>
+    <hr>
+    
+    
+    </div>
+    </div>
+</body>
+</html>
