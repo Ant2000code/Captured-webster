@@ -100,7 +100,7 @@ def registerStudent(request):
                 userName=username,
                 quesNo=0,
                 ansNo=0
-                )
+                
                 detail.save()
                 print('user created')
                 return redirect('login')
