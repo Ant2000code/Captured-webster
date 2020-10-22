@@ -67,6 +67,7 @@
               <h5 class="card-title">{{i.topic}}</h5>
               <h6 class="card-subtitle mb-2 text-muted">posted by:{{i.postedBy}}</h6>
               <p class="card-text">{{i.quesText}}</p>
+
               {% if user.is_authenticated %}
               <a href="home/solution/{{i.id}}" class="card-link">See Answer</a>
               <a href="#" class="card-link">Comments</a>
@@ -75,12 +76,11 @@
               <a href="#" class="card-link">Comments</a>
               {% endif %}
               {% endif %}
+
             </div>
           </div>
          <br>
          {% endfor %}
-
-          
         
       </div>
 

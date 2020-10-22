@@ -78,11 +78,12 @@ WSGI_APPLICATION = 'AnswerEasy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'web20',
+        'NAME': 'Web20',
         'USER':'root',
         'PASSWORD':'',
         'HOST':'localhost',
-        'PORT': '3307',
+        'PORT': '3306',
+
     }
 }
 

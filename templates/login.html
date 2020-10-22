@@ -1,17 +1,18 @@
-{% load static %}
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
+
     <link rel="stylesheet" href="{% static 'login_register.css' %}">
 </head>
 <body>
-     <!-- Sign in form -->
+     <!-- Sign up form -->
+     <form action="login" method="POST">
 
-     <form class="form" action="login" method="POST">
         <h2 class="title">Sign In</h2>
 
         {% csrf_token %}
@@ -19,12 +20,15 @@
         <input type="text" name="username" placeholder="Username"><br>
         <input type="password" name="password" placeholder="Password"><br>
         <input type="submit">
-        
+
+      </form>
+
       <div>
           {% for message in messages %}
           <h2> {{message}} </h2>
           {% endfor %}
       </div>
 </body>
+
 </html>
 

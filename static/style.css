@@ -1,6 +1,7 @@
 /* Navbar css */
 
-body {margin: 0px;
+
+body {margin: 0;
   background-color:rgb(226, 224, 224);
   background-repeat: no-repeat;
   background-size: cover;
@@ -279,7 +280,6 @@ background-color:#024e54;
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
 transition: margin-left .5s; /* If you want a transition effect */
-
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

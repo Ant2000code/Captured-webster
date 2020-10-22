@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Detail(models.Model):
-    category = models.CharField(max_length=10)
+    category=models.CharField(max_length=10)
     userName=models.CharField(max_length=50,default="")
     #qualification=models.ChoiceField()
     quesNo=models.IntegerField(default=0)
@@ -11,10 +11,10 @@ class Detail(models.Model):
 
 
 class Question(models.Model):
-    topic=models.CharField(max_length=300, default="")
-    quesText=models.CharField(max_length=300, default="")
-    time=models.DateTimeField(auto_now_add=True)  
-    postedBy=models.CharField(max_length=50, default="",null=False,blank=False)
+    topic=models.CharField(max_length=300,default="")
+    quesText=models.CharField(max_length=300,default="")
+    time=models.DateTimeField(auto_now_add=True)
+    postedBy=models.CharField(max_length=50,default="",null=False,blank=False)
     accepted=models.BooleanField(default=False)
     acceptedBy=models.CharField(max_length=50, default="",null=False,blank=True)
     answered=models.BooleanField(default=False)

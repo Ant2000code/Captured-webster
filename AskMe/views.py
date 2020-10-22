@@ -19,7 +19,6 @@ def solution(request, id):
     que = Question.objects.get(pk=id)
     return render(request, 'solution.html', {'ans': ans, 'que': que})
 
-
 def login(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -88,7 +87,7 @@ def registerStudent(request):
 
         if password1==password2:
             if User.objects.filter(username=username).exists():
-                messages.info(request, 'username taken')
+                messages.info(request,'username taken')
                 return redirect('register/student')
             elif User.objects.filter(email=email).exists():
                 messages.info(request,'email taken')
@@ -96,10 +95,10 @@ def registerStudent(request):
             else:
                 user = User.objects.create_user(username=username,password=password1,email=email)
                 user.save()
-                detail=Detail.objects.create(
-                category =category,
-                userName =username,
-                quesNo =0,
+
+                category=category,
+                userName=username,
+                quesNo=0,
                 ansNo=0
                 )
                 detail.save()
@@ -111,7 +110,7 @@ def registerStudent(request):
             return redirect('register/student')
         return redirect('/home')
     else:
-        return render(request, 'register.html')
+        return render(request,'register.html')
 
 
 def logout(request):
@@ -120,7 +119,7 @@ def logout(request):
 
 
 def dashboard(request):
-    curruser = request.user.username
+    curruser=request.user.username
     det=Detail.objects.get(userName=curruser)
     cate=det.category
     print(cate)
@@ -141,8 +140,10 @@ def Askquestion(request):
         curruser=request.user.username
         det=Detail.objects.get(userName=curruser)
         
+
         question=Question.objects.create\
                 (
+
             topic=topic,
             quesText=quesText,
             postedBy=postedBy,
@@ -157,17 +158,16 @@ def Askquestion(request):
       return render(request,'question.html',{'form':form})
 
 def answer(request,id):
-    if request.method == 'POST':
+
+    if request.method=='POST':
         ansText=request.POST['answertxt']
-        ansImg = request.POST['image']
+        ansImg=request.POST['image']
         answeredBy=request.user.username
         curruser=request.user.username
-        det = Detail.objects.get(userName=curruser)
-
+        det=Detail.objects.get(userName=curruser)
         que=Question.objects.get(pk=id)
 
-        ans=Answer.objects.create\
-                (
+        ans=Answer.objects.create(
             question=que,
             ansText=ansText,
             answeredBy=answeredBy,
@@ -176,6 +176,7 @@ def answer(request,id):
         det.ansNo=F('ansNo')+1
         det.save(update_fields=["ansNo"])
         que.accepted=True
+
         que.answered=True
         que.acceptedBy=curruser
         que.save(update_fields=["accepted"])
@@ -187,7 +188,5 @@ def answer(request,id):
     else:
        queId = Question.objects.get(pk=id)
        return render(request, 'answer.html', {'queId':queId})
-
-
 
 

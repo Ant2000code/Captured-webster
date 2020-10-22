@@ -10,7 +10,9 @@ function openNav() {
 
   function myFunction(){
       
+
       alert("Answer has been Submitted");
+
   }
   var doc = new jsPDF(); 
   var specialElementHandlers = { 
