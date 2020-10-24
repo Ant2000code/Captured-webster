@@ -31,7 +31,7 @@
                         </li>
                         {% if user.is_authenticated %}
                         <li class="nav-item ">
-                          <a class="nav-link" href="dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="/dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
                       </li>
                         <li class="nav-item ">
                           <a class="nav-link" href="logout">Logout<span class="sr-only">(current)</span></a>
@@ -50,10 +50,11 @@
                     {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact us</a>
+
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -147,10 +148,10 @@
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#recent topics">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
-    <a href="#notify">Science</a>
-    <a href="#">Social Science</a>
-    <a href="#">Language and Literature</a>
-    <a href="#">Miscellaneous</a>
+    <a href="/home/Science">Science</a>
+    <a href="/home/SocialScience">Social Science</a>
+    <a href="/home/LanguageAndLiterature">Language and Literature</a>
+    <a href="/home/Miscellaneous">Miscellaneous</a>
   </div>
 </div>
   <script>

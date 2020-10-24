@@ -7,7 +7,8 @@ class Detail(models.Model):
     #qualification=models.ChoiceField()
     quesNo=models.IntegerField(default=0)
     ansNo=models.IntegerField(default=0)
-    profilepic = models.ImageField(upload_to='pictures',default="",blank=True,null=True)
+    profilepic=models.ImageField(upload_to='pictures',default="",blank=True,null=True)
+    workingOn=models.IntegerField(default=0)
 
 
 class Question(models.Model):
@@ -29,3 +30,8 @@ class Answer(models.Model):
     answeredBy=models.CharField(max_length=50,default="",null=False,blank=False)
     time=models.DateTimeField(auto_now_add=True)
     ansImg=models.ImageField(upload_to='ansimages',default="",blank=True,null=True)
+
+    
+
+    
+
