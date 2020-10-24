@@ -9,7 +9,7 @@ class Detail(models.Model):
     quesNo=models.IntegerField(default=0)
     ansNo=models.IntegerField(default=0)
     profilepic=models.ImageField(upload_to='pictures',default="",blank=True,null=True)
-
+    workingOn=models.IntegerField(default=0)
 
 class Question(models.Model):
     topic=models.CharField(max_length=300,default="")
@@ -32,3 +32,4 @@ class Answer(models.Model):
     ansImg=models.ImageField(upload_to='ansimages',default="",blank=True,null=True)
     
 
+    
