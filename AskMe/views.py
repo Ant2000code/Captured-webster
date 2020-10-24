@@ -13,10 +13,14 @@ from django.utils.timezone import utc
 
 # Create your views here.
 def home(request):
-
-    que=Question.objects.all().order_by('-id')
-    ans=Answer.objects.all().order_by('id')
-    return render(request,'index.html',{'que':que, 'ans':ans})
+ if 'search' in request.GET:
+        search=request.GET['search']
+        
+        que=Question.objects.filter(topic="Science",quesText__icontains=search).order_by('-id')
+ else:    
+       que=Question.objects.all().order_by('-id')
+       ans=Answer.objects.all().order_by('id')
+ return render(request,'index.html',{'que':que, 'ans':ans})
 
 def solution(request, id):
     que = Question.objects.get(pk=id)
@@ -277,11 +281,6 @@ def answer(request,id):
 
     else:
 
-       queId = Question.objects.get(pk=id)
-       return render(request, 'answer.html', {'queId':queId})
-
-
-       
        queId=Question.objects.get(pk=id)
        now=datetime.utcnow().replace(tzinfo=utc)
        timediff = now -queId.time
