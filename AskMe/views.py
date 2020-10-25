@@ -8,6 +8,8 @@ from django.db.models import Count, F, Value
 from .forms import QuestionForm
 from datetime import datetime,date
 from django.utils.timezone import utc
+from django.conf import settings 
+from django.core.mail import send_mail
 
 
 
@@ -122,6 +124,13 @@ def registerTutor(request):
                 ansNo=0
                 )
                 detail.save()
+
+                subject = 'Registration done successfully'
+                message = f'Hi {user.username}, thank you for registering in Ask me Anything.'
+                email_from = settings.EMAIL_HOST_USER 
+                recipient_list = [user.email, ] 
+                send_mail( subject, message, email_from, recipient_list )
+
                 print('user created')
                 return redirect('login')
 
