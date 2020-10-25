@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+
+  <title>
+      Question Form
+  </title>
+
+    <head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'style.css'%}">
+      <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
+      
+    </head>
+
+    <body>
+    <!-- Dashboard navigation bar -->
+      <nav class="navbar navbar-expand-sm navbar-dark " style="background-color:#026670;">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Dashboard</a>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <button class="openbtn" onclick="openNav()">&#9776;</button>
+          </li>
+          <!-- <li class="nav-item ">
+          <a class="nav-link" href="#">icon <span class="sr-only">(current)</span></a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="material-icons">&#xe7ff;</i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="material-icons">&#xe8b8;</i></a>
+          </li>
+        </ul>
+      </div>
+      </nav>
+
+    
+    </div>
+  
+        
+    <!--Question Form-->
+    <div id="content" class="form-style">
+    <link rel="stylesheet" href="question.css"> 
+      <form action="" method="POST"> 
+        {% csrf_token %}
+
+        
+        <legend>Question </legend> 
+          
+          <textarea style="height:200px; width:100%;background-color:white; border:none" name="questxt" ></textarea>
+          <!--datalist-->
+        <label for="topic">Choose a Topic:</label>
+          <select id="topic" name="topic">
+    <option value="Science">Science</option>
+    <option value="Social Science">Social Science</option>
+    <option value="Language and Literature">Language and Literature</option>
+    <option value="Miscellaneous">Miscellaneous</option>
+  </select>          
+          
+          
+
+      <!--adding image of questions-->
+      <label for="image">Uploade image of question:</label>
+      <input type="file"
+        id="image" name="image"
+        accept="image/png, image/jpeg , image/jpg">
+      <input onclick="myFunction()" type="submit" value="Submit" /> 
+      </form>
+    </div> 
+
+    <button id="submit">Save A Copy Of Your Response</button>
+    <script src="{% static 'question.js'%}"></script>
+    </body>
+       
+</html>

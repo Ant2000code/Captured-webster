@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Social Science</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Social science Related Questions</h1>
+    <div class="container" style="background-color: rgb(197, 185, 185);  padding-top: 20px; align-content: center;" >
+        {% for i in que %}
+        {% if i.topic == 'Social Science' %}
+          <div class="card" style="width:80%;">
+              <div class="card-body">
+                <h5 class="card-title">{{i.topic}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">posted by:{{i.postedBy}}</h6>
+                <p class="card-text">{{i.quesText}}</p>
+                <a href="#" class="card-link">See Answer</a>
+                <a href="#" class="card-link">Comments</a>
+              </div>
+            </div>
+           <br>
+        {% endif %} 
+           {% endfor %}
+            
+          
+        </div>
+    
+</body>
+</html>
