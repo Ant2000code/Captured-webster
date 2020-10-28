@@ -32,6 +32,12 @@ class Answer(models.Model):
     ansImg=models.ImageField(upload_to='ansimages',default="",blank=True,null=True)
 
     
+class AnsComment(models.Model):
+    answer=models.ForeignKey(Answer,on_delete=models.CASCADE)
+    comment_text=models.TextField()
+    posted_by=models.CharField(max_length=100,default="",null=False,blank=False)
+    time=models.DateTimeField(auto_now_add=True)
+
 
     
 

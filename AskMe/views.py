@@ -10,7 +10,7 @@ from datetime import datetime,date
 from django.utils.timezone import utc
 from django.conf import settings 
 from django.core.mail import send_mail
-
+import json
 
 
 # Create your views here.
@@ -18,25 +18,37 @@ def home(request):
  if 'search' in request.GET:
         search=request.GET['search']
         
-        que=Question.objects.filter(topic="Science",quesText__icontains=search).order_by('-id')
+        que=Question.objects.filter(quesText__icontains=search).order_by('-id')
  else:    
        que=Question.objects.all().order_by('-id')
-       ans=Answer.objects.all().order_by('id')
- return render(request,'index.html',{'que':que, 'ans':ans})
+       
+ return render(request,'index.html',{'que':que})
 
 def solution(request, id):
     que = Question.objects.get(pk=id)
     ans = Answer.objects.get(question=que)
-    return render(request, 'solution.html', {'ans': ans, 'que': que})
+    AnsC=AnsComment.objects.filter(answer=ans)
+    return render(request, 'solution.html', {'ans': ans, 'que': que,'AnsC':AnsC})
 
-    if 'search' in request.GET:
-        search=request.GET['search']
-        que=Question.objects.filter(quesText__icontains=search).order_by('-id')
-    else:
-        que=Question.objects.all().order_by('-id')
+# Save Comment method
+def savecomment(request):
+    if request.method=='POST':
+        comment_text=request.POST['comment']
+        ansid=request.POST['ans_id']
+        answer=Answer.objects.get(pk=ansid)
+        posted_by=request.user.username
+        bool=True
+        AnsComment.objects.create(
+            comment_text=comment_text,
+            answer=answer,
+            posted_by=posted_by
+
+        )
+
+
         
-    return render(request,'index.html',{'que':que})
-
+    return HttpResponse(json.dumps({'commment':comment_text,'ansid':ansid,'postedby':posted_by,'bool':True}), content_type="application/json")
+    #return JsonResponse({'bool':True})
 
 def home2(request):
     if 'search' in request.GET:
@@ -75,8 +87,6 @@ def home5(request):
 
 
 
-def answersave(request):
-    return render(request,'ajaxtest.html')
 
 def login(request):
     if request.method=='POST':
@@ -161,11 +171,14 @@ def registerStudent(request):
             else:
                 user = User.objects.create_user(username=username,password=password1,email=email)
                 user.save()
-
+                detail=Detail.objects.create(
                 category=category,
                 userName=username,
                 quesNo=0,
                 ansNo=0
+                )
+
+                
                 
                 detail.save()
                 print('user created')
@@ -192,9 +205,10 @@ def dashboard(request):
  if cate =='Tutor':
         
         que=Question.objects.all().order_by('-id')
+        que2=Question.objects.filter(answered=True,acceptedBy=curruser).order_by('-id')
         workOn=det.workingOn
         print(workOn)
-        return render(request,'Tdashboard.html',{'que':que,'workOn':workOn,'det':det})
+        return render(request,'Tdashboard.html',{'que':que,'workOn':workOn,'det':det,'que2':que2})
  else:
         return render(request,'Sdashboard.html')
 
@@ -224,7 +238,17 @@ def dashboard2(request,id):
       else:
          return redirect('dashboard')
     
-        
+   #Get user settings
+def settings(request):
+    curruser=request.user.username
+    det=Detail.objects.get(userName=curruser)
+    if request.method =='POST':
+       img=request.FILES['profilepicture']
+       det.profilepic=img
+       det.save(update_fields=["profilepic"])
+       return redirect('/dashboard/settings')
+    else:
+       return render(request,'userSettings.html',{'det':det})     
         
 
 
@@ -239,8 +263,7 @@ def Askquestion(request):
         det=Detail.objects.get(userName=curruser)
         
 
-        question=Question.objects.create\
-                (
+        question=Question.objects.create(
 
             topic=topic,
             quesText=quesText,
@@ -299,6 +322,8 @@ def answer(request,id):
        if tf==True:
          queId.expired=True
          queId.save(update_fields=['expired'])
+         det.workingOn=0
+         det.save(update_fields=['workingOn'])
          return redirect('dashboard')
        else:
            if det.workingOn==0:

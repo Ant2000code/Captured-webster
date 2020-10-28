@@ -18,11 +18,11 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/question', views.Askquestion, name='question'),
     path('dashboard/answer/<int:id>', views.answer, name='answer'),
-    
     path('dashboard/save/<int:id>',views.dashboard2,name='dashboard'),
-
-    path('home/solution/<int:id>', views.solution, name='solution'),
-    path('home/solution/logout', views.logout, name='logout')
+    path('dashboard/settings',views.settings,name='settings'),
+    path('solution/<int:id>', views.solution, name='solution'),
+    path('savecomment',views.savecomment,name='savecomment'),
+    path('solution/logout', views.logout, name='logout')
     ]
    
     
