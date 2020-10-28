@@ -6,11 +6,15 @@
     <meta charset="UTF-8">
     <title>Solution</title>
     <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
       src="https://kit.fontawesome.com/64d58efce2.js"
+      
       crossorigin="anonymous"
     ></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'solution.css' %}">
+    
     
 </head>
 <body>
@@ -25,9 +29,6 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <button class="openbtn" onclick="openNav()">&#9776;</button>
-                        </li>
                         
                         <li class="nav-item ">
                           <a class="nav-link" href="dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
@@ -49,29 +50,9 @@
 
     
 
-<!--Dashboard sidebar-->
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="#recent topics">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
-    <a href="#notify">Science</a>
-    <a href="#">Social Science</a>
-    <a href="#">Language and Literature</a>
-    <a href="#">Miscellaneous</a>
-  </div>
-</div>
-  <script>
-    function openNav() {
-      document.getElementById("mySidebar").style.width = "250px";
-      document.getElementById("main").style.marginLeft = "250px";
-    }
-    
-    function closeNav() {
-      document.getElementById("mySidebar").style.width = "0";
-      document.getElementById("main").style.marginLeft= "0";
-    }
-    
-    </script>
 
+</div>
+  
 
     <!--solution-->
 <div class="container">
@@ -83,12 +64,75 @@
     <p>Time:{{que.time}}</p>
     <hr>
     <p>Answered By: {{ans.answeredBy}}</p>
-    
     <p class="ans">{{ans.ansText}}</p>
-    <hr>
+<!--Comment section-->
+    
+    <h3 class="my-4">Comment</h3>
+    <div class="comment-wrapper">
+      {% for i in AnsC %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <p>posted by:{{i.posted_by}}</p>
+          <h7>{{i.comment_text}}</h7>
+          
+        </div>
+      </div>
+    
+    {% endfor %}
     
     
     </div>
+    <div class="card my-3">
+      <h6 class="card-header">Add comment</h6>
+      <div class="card-body">
+        <textarea class="form-control comment-text"></textarea>
+        
+        <button type="button" data-answer="{{ans.id}}" class="btn btn-dark my-3 save">Submit</button>
+      </div>
     </div>
+    </div>
+    </div>
+    <script >
+  $(document).ready(function(){
+    $(".save").on('click',function(){
+        var comm=$(".comment-text").val();
+        var ansid=$(this).data('answer');
+        //Ajax request
+        $.ajax({
+          url:"/savecomment",
+          type:"post",
+          data:{
+            comment:comm,
+            ans_id:ansid,
+            csrfmiddlewaretoken:"{{csrf_token}}"
+            
+          },
+          dataType:'json',
+          beforeSend:function(){
+            $(".save").addClass('disabled').text('saving...');
+            
+          },
+          success:function(res){
+            console.log(res);
+            if(res.bool==true){
+              $('.comment-text').val('');
+              //Appending commment
+              var element='<div class="card mb-2 animate__animated animate__bounce">\
+              <div class="card-body">\
+              <p>posted by:{{request.user.username}}</p>\
+              <h7>'+comm+'</h7>\
+                </div>\
+                </div>';
+            $(".comment-wrapper").append(element);
+            }
+            $(".save").removeClass('disabled').text('Submit');
+          }
+
+      
+        });
+    });
+  });
+
+    </script>
 </body>
 </html>

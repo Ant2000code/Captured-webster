@@ -102,3 +102,10 @@ background-size: cover;
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
 }
+
+img{
+  height:60px;
+  width:60px;
+  border-radius: 50%;
+
+}

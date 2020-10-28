@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'home.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    {% if det.profilepic %}
+    <img src="{{det.profilepic.url}}" style="height: 200px; width: 200px;">
+    {% else %}
+    <img src="">
+    {% endif %}
+
+    <form>
+        <fieldset disabled>
+          <div class="form-group">
+            <label for="disabledTextInput">Disabled input</label>
+            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{det.username}}">
+          </div>
+          
+            
+        <div class="form-group">
+          <label for="disabledTextInput">Disabled input</label>
+           <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+        </div>
+              
+            
+                  <div class="form-group">
+                    <label for="disabledTextInput">Disabled input</label>
+                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+                  </div>
+                  
+
+          </form>
+</fieldset>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file"
+    id="profilepic" name="profilepicture"
+    accept="image/png, image/jpeg , image/jpg">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    
+</form>
+</body>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +31,13 @@
         </li>
         <li class="nav-item">
             
-            <a class="nav-link" href="#"><i class="material-icons">&#xe8b8;</i></a>
+            <a class="nav-link" href="/dashboard/settings"><i class="material-icons">&#xe8b8;</i></a>
+            
+          </li>
+          <li >
+            {% if det.profilepic %}
+            <img src="{{det.profilepic.url}}" style="width: 60px;height: 60px;border-radius: 50%;float: right;">
+            {% endif %}
             
           </li>
        </ul>
@@ -54,32 +61,20 @@
       <div class="flex-container">
 
       
-        <div class="list-group" id="recent topics" style="flex-grow: 5; background-color: #edeae5;"> Recent Topics visited 
+        <div class="list-group" id="recent" style="flex-grow: 5; background-color: #edeae5;"> <h3 style="color:#026670;">Recent Questions Answered </h3>
             
-                <a href="#" class="list-group-item list-group-item-action">
+               
+                  {% for i in que2 %}
+                  <a href="solution/{{i.id}}" class="list-group-item list-group-item-action">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 1</h5>
-                    <small>1 day ago</small>
+                    
+                    <h5 class="mb-1">{{i.quesText}}</h5>
+                    <small>{{i.time|naturaltime}}</small>
                   </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus.</p>
-                  <small>Donec id elit non mi porta.</small>
+                  <p class="mb-1">posted by: {{i.postedBy}}</p>
+                  <small class="mb-2"><a href="solution/{{i.id}}">See  answer</a></small>
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 2</h5>
-                    <small class="text-muted">3 days ago</small>
-                  </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                  <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 3</h5>
-                    <small class="text-muted">3 days ago</small>
-                  </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                  <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
+                {% endfor %}
               </div>
             </div>
           <br>
@@ -87,6 +82,7 @@
               <h5>Notifications!</h5>
               {% for i in que %}
               {% if i.accepted == False %}
+              {% if i.expired == False %}
             <div class="alert alert-primary" role="alert">
                 <h5>{{i.topic}}</h5>
                 <br>
@@ -94,16 +90,14 @@
                 </div>
                 <div class="btn-group" role="group" aria-label="Basic example">
               
-                 {% if i.expired == False %}
+                 
               
-                <button type="submit" class="btn btn-secondary" style="background-color: #15a7b5;"><b><a href="dashboard/save/{{i.id}}">Accept and save</a></b></button>
-               <button type="button" class="btn btn-secondary" style="background-color: #fef9c7; color:#026670"><b><a href="dashboard/answer/{{i.id}}">Accept and Answer</a></b></button>
-                <button type="button" class="btn btn-secondary" style="background-color: #15a7b5;"><b>Reject</b></button>
-                {% else %}
-                <button>Expired</button>
-                {% endif %}
+                <button type="submit" class="btn btn-dark my-3" ><b><a href="dashboard/save/{{i.id}}">Accept and save</a></b></button>
+                <button type="button" class="btn btn-dark my-3" ><b><a href="dashboard/answer/{{i.id}}">Accept and Answer</a></b></button>
+                
               </div>
                <br><br>
+               {% endif %}
               {% endif %}
               {% endfor %}
                <br>
@@ -111,24 +105,43 @@
               </div>     
               
             <div>
-          
+          <div id='current'>
             {% for i in que %}
             {% if i.id == workOn %}
             <h5>
             Working on:{{ i.quesText }}
             </h5>
-            <button><a href="dashboard/answer/{{workOn}}">Answer</a></button>
+            <button ><a href="dashboard/answer/{{workOn}}">Answer</a></button>
+
             {% endif %}
             {% endfor %}
+            </div>
             
+            </div>
+            <div id="expired">
+              <h3>Expired questions</h3>
+              {% for i in que %}
+              {% if i.acceptedBy == request.user.username %}
+               {% if i.expired == True %}
+                
+                  <div class="d-flex w-100 justify-content-between">
+                    
+                    <h5 class="mb-1">{{i.quesText}}</h5>
+                    <small>1 day ago</small>
+                  </div>
+                  <p class="mb-1">posted by: {{i.postedBy}}</p>
+                  {% endif %}
+                {% endif %}
+                {% endfor %}
             </div>
 <!--Dashboard sidebar-->
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#recent topics">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
     <a href="#notify">Notifications <i style="font-size:24px" class="fa">&#xf0f3;</i></a>
-    <a href="#">Requests  <i class="material-icons">&#xe0c9;</i></a>
-    <a href="#">Activity</a>
+    <a href="#recent">Recent Activity  <i class="material-icons">&#xe0c9;</i></a>
+    <a href="#expired">Expired</a>
+    <a href="#current">Current</a>
   </div>
 </div>
   <script>
