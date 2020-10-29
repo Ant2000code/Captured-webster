@@ -8,7 +8,7 @@ from django.db.models import Count, F, Value
 from .forms import QuestionForm
 from datetime import datetime,date
 from django.utils.timezone import utc
-from django.conf import settings 
+from django.conf import settings
 from django.core.mail import send_mail
 import json
 
@@ -28,15 +28,18 @@ def solution(request, id):
     que = Question.objects.get(pk=id)
     ans = Answer.objects.get(question=que)
     AnsC=AnsComment.objects.filter(answer=ans)
-    return render(request, 'solution.html', {'ans': ans, 'que': que,'AnsC':AnsC})
+    QuesC=QuesComment.objects.filter(question=que)
+    return render(request, 'solution.html', {'ans': ans, 'que': que,'AnsC':AnsC,'QuesC':QuesC})
 
-# Save Comment method
+# Save Answer Comment method
 def savecomment(request):
     if request.method=='POST':
         comment_text=request.POST['comment']
         ansid=request.POST['ans_id']
         answer=Answer.objects.get(pk=ansid)
         posted_by=request.user.username
+        recip=answer.answeredBy
+        recipient=User.objects.get(username=recip)
         bool=True
         AnsComment.objects.create(
             comment_text=comment_text,
@@ -44,11 +47,38 @@ def savecomment(request):
             posted_by=posted_by
 
         )
+        subject ='New comment!'
+        message = f'Hi {answer.answeredBy}, Someone commented on your answer to {answer.question.quesText}!'
+        email_from = settings.EMAIL_HOST_USER 
+        recipient_list = [recipient.email, ] 
+        send_mail( subject, message, email_from, recipient_list )
 
 
-        
     return HttpResponse(json.dumps({'commment':comment_text,'ansid':ansid,'postedby':posted_by,'bool':True}), content_type="application/json")
     #return JsonResponse({'bool':True})
+
+def savecomment2(request):
+    if request.method=='POST':
+        comment_text=request.POST['comment']
+        quesid=request.POST['ques_id']
+        question=Question.objects.get(pk=quesid)
+        posted_by=request.user.username
+        bool=True
+        QuesComment.objects.create(
+            comment_text=comment_text,
+            question=question,
+            posted_by=posted_by
+
+        )
+        subject ='New comment!'
+        message = f'Hi {question.postedBy}, Someone commented on your question {question.quesText}!'
+        email_from = settings.EMAIL_HOST_USER 
+        recipient_list = [request.user.email, ] 
+        send_mail( subject, message, email_from, recipient_list )
+
+
+
+    return HttpResponse(json.dumps({'commment':comment_text,'quesid':quesid,'postedby':posted_by,'bool':True}), content_type="application/json")   
 
 def home2(request):
     if 'search' in request.GET:
@@ -120,10 +150,10 @@ def registerTutor(request):
         if password1==password2:
             if User.objects.filter(username=username).exists():
                 messages.info(request,'username taken')
-                return redirect('register/tutor')
+                return redirect('/register/tutor')
             elif User.objects.filter(email=email).exists():
                 messages.info(request,'email taken')
-                return redirect('register/tutor') 
+                return redirect('/register/tutor') 
             else:
                 user = User.objects.create_user(username=username,password=password1,email=email)
                 user.save()
@@ -146,7 +176,7 @@ def registerTutor(request):
 
         else:
             messages.info(request,'password not matching..')
-            return redirect('register/tutor')
+            return redirect('/register/tutor')
         return redirect('/home')
     else:
         return render(request,'register.html')
@@ -164,10 +194,10 @@ def registerStudent(request):
         if password1==password2:
             if User.objects.filter(username=username).exists():
                 messages.info(request,'username taken')
-                return redirect('register/student')
+                return redirect('/register/student')
             elif User.objects.filter(email=email).exists():
                 messages.info(request,'email taken')
-                return redirect('register/student') 
+                return redirect('/register/student') 
             else:
                 user = User.objects.create_user(username=username,password=password1,email=email)
                 user.save()
@@ -186,7 +216,7 @@ def registerStudent(request):
 
         else:
             messages.info(request, 'password not matching..')
-            return redirect('register/student')
+            return redirect('/register/student')
         return redirect('/home')
     else:
         return render(request,'register.html')
@@ -212,10 +242,11 @@ def dashboard(request):
  else:
         return render(request,'Sdashboard.html')
 
+#This function is called when tutor clicks on Accept and Save
 def dashboard2(request,id):
     que=Question.objects.get(pk=id)
     now=datetime.utcnow().replace(tzinfo=utc)
-    timediff = now -que.time
+    timediff = now-que.time
     tf=timediff.total_seconds()>86400
     curruser=request.user.username
     det=Detail.objects.get(userName=curruser)
@@ -233,13 +264,18 @@ def dashboard2(request,id):
          det=Detail.objects.get(userName=curruser)
          det.workingOn=id
          det.save(update_fields=['workingOn'])
+         subject = 'Question accepted and saved!'
+         message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
+         email_from = settings.EMAIL_HOST_USER 
+         recipient_list = [request.user.email, ] 
+         send_mail( subject, message, email_from, recipient_list )
          print(que.quesText)
          return redirect('dashboard')
       else:
          return redirect('dashboard')
     
    #Get user settings
-def settings(request):
+def settingS(request):
     curruser=request.user.username
     det=Detail.objects.get(userName=curruser)
     if request.method =='POST':
@@ -273,11 +309,19 @@ def Askquestion(request):
         det.quesNo=F('quesNo')+1
         det.save(update_fields=["quesNo"])
         question.save()
+        subject = 'You asked a Question!'
+        message = f'Hi {curruser}, You asked question: {quesText}. Your question will soon be accepted by our Tutors! Thank You for trusting us!'
+        
+        email_from = settings.EMAIL_HOST_USER 
+        recipient_list = [request.user.email, ] 
+        send_mail( subject, message, email_from, recipient_list )
         return redirect('dashboard')
 
     else: 
       return render(request,'question.html',{'form':form})
 
+
+#When Answer is called directly
 def answer(request,id):
 
     if request.method=='POST':
@@ -300,8 +344,6 @@ def answer(request,id):
         det.save(update_fields=['workingOn'])
         det.save(update_fields=["ansNo"])
         que.accepted=True
-
-        que.answered=True
         que.acceptedBy=curruser
         que.answered=True
         que.save(update_fields=["accepted"])
@@ -309,6 +351,11 @@ def answer(request,id):
         que.save(update_fields=["acceptedBy"])
         que.save(update_fields=["answered"])
         ans.save()
+        subject ='You Answered!'
+        message = f'Hi {curruser}, You answered question: {que.quesText}. All the best for future!'
+        email_from = settings.EMAIL_HOST_USER 
+        recipient_list = [request.user.email, ] 
+        send_mail( subject, message, email_from, recipient_list )
         return redirect('dashboard')
 
     else:
@@ -316,7 +363,7 @@ def answer(request,id):
        queId=Question.objects.get(pk=id)
        now=datetime.utcnow().replace(tzinfo=utc)
        timediff = now -queId.time
-       tf=timediff.total_seconds()>86400
+       tf=timediff.total_seconds()>86400 #check 24 hour timer
        curruser=request.user.username
        det=Detail.objects.get(userName=curruser)
        if tf==True:
@@ -331,6 +378,63 @@ def answer(request,id):
            else:
               return redirect('dashboard')
 
-           
+
+ #Answer page from already saved section
+def answer2(request,id):
+
+    if request.method=='POST':
+        
+        ansText=request.POST['answertxt']
+        ansImg=request.POST['image']
+        answeredBy=request.user.username
+        curruser=request.user.username
+        det=Detail.objects.get(userName=curruser)
+        que=Question.objects.get(pk=id)
+        
+        ans=Answer.objects.create(
+            question=que,
+            ansText=ansText,
+            answeredBy=answeredBy,
+            ansImg=ansImg
+        )
+        det.ansNo=F('ansNo')+1
+        det.workingOn=0
+        det.save(update_fields=['workingOn'])
+        det.save(update_fields=["ansNo"])
+        que.accepted=True
+        que.acceptedBy=curruser
+        que.answered=True
+        que.save(update_fields=["accepted"])
+        que.save(update_fields=["answered"])
+        que.save(update_fields=["acceptedBy"])
+        que.save(update_fields=["answered"])
+        ans.save()
+        subject ='You Answered!'
+        message = f'Hi {curruser}, You answered question: {que.quesText}. All the best for future!'
+        email_from = settings.EMAIL_HOST_USER 
+        recipient_list = [request.user.email, ] 
+        send_mail( subject, message, email_from, recipient_list )
+        return redirect('dashboard')
+
+    else:
+
+       queId=Question.objects.get(pk=id)
+       now=datetime.utcnow().replace(tzinfo=utc)
+       timediff = now -queId.time
+       tf=timediff.total_seconds()>86400 #check 24 hour timer
+       curruser=request.user.username
+       det=Detail.objects.get(userName=curruser)
+       if tf==True:
+         queId.expired=True
+         queId.save(update_fields=['expired'])
+         det.workingOn=0
+         det.save(update_fields=['workingOn'])
+         return redirect('dashboard')
+       else:
+           if det.workingOn>0:
+              return render(request, 'answer.html',{'queId':queId})
+           else:
+              return redirect('dashboard')
+
 
 

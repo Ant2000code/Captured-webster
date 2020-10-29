@@ -22,7 +22,7 @@
             aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Ask me Anything</a>
+        <a class="navbar-brand" href="/home">Ask me Anything</a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -34,7 +34,7 @@
                           <a class="nav-link" href="/dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
                       </li>
                         <li class="nav-item ">
-                          <a class="nav-link" href="logout">Logout<span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
                       </li>
                       {% else %}
                     <li class="nav-item ">
@@ -45,11 +45,11 @@
                       <a class="nav-link" href="/register/student">Register as Student<span class="sr-only">(current)</span></a>
                      </li>
                      <li class="nav-item">
-                     <a class="nav-link" href="login">Login</a>
+                     <a class="nav-link" href="/login">Login</a>
                     </li>
                     {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact us</a>
+                    <a class="nav-link" href="#contact">Contact us</a>
 
                 </li>
             </ul>
@@ -71,11 +71,14 @@
               <p class="card-text">{{i.quesText}}</p>
 
               {% if user.is_authenticated %}
-              <a href="home/solution/{{i.id}}" class="card-link">See Answer</a>
-              <a href="#" class="card-link">Comments</a>
+              <a href="/solution/{{i.id}}" class="card-link">See Answer</a>
+              
               {% else %}
-              <a href="login" class="card-link">See Answer</a>
-              <a href="#" class="card-link">Comments</a>
+              <a href="/login" class="card-link">See Answer</a>
+              
+              
+              
+              </div>
               {% endif %}
               {% endif %}
 
@@ -148,7 +151,7 @@
 <!--Dashboard sidebar-->
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="#recent topics">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
+    <a href="">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
     <a href="/home/Science">Science</a>
     <a href="/home/SocialScience">Social Science</a>
     <a href="/home/LanguageAndLiterature">Language and Literature</a>
@@ -156,6 +159,9 @@
   </div>
 
   <script>
+    $("#opencomments").click(function(){
+        $(".comment-wrapper").slideToggle();
+    });
     function openNav() {
       document.getElementById("mySidebar").style.width = "250px";
       document.getElementById("main").style.marginLeft = "250px";
