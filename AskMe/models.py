@@ -38,6 +38,12 @@ class AnsComment(models.Model):
     posted_by=models.CharField(max_length=100,default="",null=False,blank=False)
     time=models.DateTimeField(auto_now_add=True)
 
+class QuesComment(models.Model):
+    question=models.ForeignKey(Question,on_delete=models.CASCADE,related_name='ques_comment')
+    comment_text=models.TextField()
+    posted_by=models.CharField(max_length=100,default="",null=False,blank=False)
+    time=models.DateTimeField(auto_now_add=True)
+
 
     
 

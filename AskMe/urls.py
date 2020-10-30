@@ -18,10 +18,12 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/question', views.Askquestion, name='question'),
     path('dashboard/answer/<int:id>', views.answer, name='answer'),
-    path('dashboard/save/<int:id>',views.dashboard2,name='dashboard'),
-    path('dashboard/settings',views.settings,name='settings'),
+    path('dashboard/Answer/<int:id>', views.answer2, name='answer'),
+    path('dashboard/save/<int:id>',views.dashboard2,name='dashboard2'),
+    path('dashboard/settings',views.settingS,name='settingS'),
     path('solution/<int:id>', views.solution, name='solution'),
     path('savecomment',views.savecomment,name='savecomment'),
+    path('savecommentques',views.savecomment2,name='savecomment2'),
     path('solution/logout', views.logout, name='logout')
     ]
    

@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,16 +26,16 @@
             aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Ask me Anything</a>
+        <a class="navbar-brand" href="/home">Ask me Anything</a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         
                         <li class="nav-item ">
-                          <a class="nav-link" href="dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="/dashboard">{{det.n.category}}Dashboard<span class="sr-only">(current)</span></a>
                       </li>
                         <li class="nav-item ">
-                          <a class="nav-link" href="logout">Logout<span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
                       </li>
                       
                 <li class="nav-item">
@@ -59,20 +60,46 @@
 <div class="card">
     
     <p class="ques">{{ans.question.quesText}}</p>
-    <p>Posted By: {{que.postedBy}} </p>
+    <p>Posted By: {{que.postedBy}} {{que.time|naturaltime}}</p>
     <p>Topic: {{que.topic}} </p>
-    <p>Time:{{que.time}}</p>
-    <hr>
-    <p>Answered By: {{ans.answeredBy}}</p>
-    <p class="ans">{{ans.ansText}}</p>
-<!--Comment section-->
     
-    <h3 class="my-4">Comment</h3>
+    <hr>
+    <p>Answered By: {{ans.answeredBy}} {{ans.time|naturaltime}}</p>
+    <p class="ans">{{ans.ansText}}</p>
+    <h4 class="my-4" id="opencomments" >Question comments</h4>
+    <div id="quescomments" style="display: none;">
+    <div  class="comment-wrapper2">
+     
+      
+      {% for i in QuesC %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <p>posted by:{{i.posted_by}} {{i.time|naturaltime}}</p>
+          <h7>{{i.comment_text}}</h7>
+          
+        </div>
+      </div>
+    
+    {% endfor %}
+</div>    
+<div class="card my-3">
+  <h6 class="card-header">Add comment</h6>
+  <div class="card-body">
+    <textarea class="form-control comment-text2"></textarea>
+    
+    <button type="button" data-answer2="{{que.id}}" class="btn btn-dark my-3 save2">Submit</button>
+  </div>
+</div>
+</div>
+<!--Comment section for Answer-->
+    
+    <h4 class="my-4" id="opencomments2">Answer comments</h4>
+    <div id="anscomments" style="display: none;">
     <div class="comment-wrapper">
       {% for i in AnsC %}
       <div class="card mb-2">
         <div class="card-body">
-          <p>posted by:{{i.posted_by}}</p>
+          <p>posted by:{{i.posted_by}} {{i.time|naturaltime}}</p>
           <h7>{{i.comment_text}}</h7>
           
         </div>
@@ -92,6 +119,8 @@
     </div>
     </div>
     </div>
+    </div>
+    <!--Comment section adding procedure-->
     <script >
   $(document).ready(function(){
     $(".save").on('click',function(){
@@ -126,6 +155,49 @@
             $(".comment-wrapper").append(element);
             }
             $(".save").removeClass('disabled').text('Submit');
+          }
+
+      
+        });
+    });
+    $("#opencomments").click(function(){
+        $("#quescomments").slideToggle();
+    });
+    $("#opencomments2").click(function(){
+        $("#anscomments").slideToggle();
+    });
+    $(".save2").on('click',function(){
+        var comm=$(".comment-text2").val();
+        var quesid=$(this).data('answer2');
+        //Ajax request
+        $.ajax({
+          url:"/savecommentques",
+          type:"post",
+          data:{
+            comment:comm,
+            ques_id:quesid,
+            csrfmiddlewaretoken:"{{csrf_token}}"
+            
+          },
+          dataType:'json',
+          beforeSend:function(){
+            $(".save2").addClass('disabled').text('saving...');
+            
+          },
+          success:function(res){
+            console.log(res);
+            if(res.bool==true){
+              $('.comment-text').val('');
+              //Appending commment
+              var element='<div class="card mb-2 animate__animated animate__bounce">\
+              <div class="card-body">\
+              <p>posted by:{{request.user.username}}</p>\
+              <h7>'+comm+'</h7>\
+                </div>\
+                </div>';
+            $(".comment-wrapper2").append(element);
+            }
+            $(".save2").removeClass('disabled').text('Submit');
           }
 
       
