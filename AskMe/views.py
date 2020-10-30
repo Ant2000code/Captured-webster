@@ -215,10 +215,13 @@ def registerStudent(request):
                 quesNo=0,
                 ansNo=0
                 )
-
-                
                 
                 detail.save()
+                subject = 'Registration done successfully'
+                message = f'Hi {user.username}, thank you for registering with Ask me Anything.'
+                email_from = settings.EMAIL_HOST_USER 
+                recipient_list = [user.email, ] 
+                send_mail( subject, message, email_from, recipient_list )
                 print('user created')
                 return redirect('login')
 
