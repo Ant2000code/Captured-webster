@@ -57,12 +57,15 @@ def savecomment(request):
     return HttpResponse(json.dumps({'commment':comment_text,'ansid':ansid,'postedby':posted_by,'bool':True}), content_type="application/json")
     #return JsonResponse({'bool':True})
 
+# Save comment on Question 
 def savecomment2(request):
     if request.method=='POST':
         comment_text=request.POST['comment']
         quesid=request.POST['ques_id']
         question=Question.objects.get(pk=quesid)
         posted_by=request.user.username
+        recip=question.postedBy
+        recipient=User.objects.get(username=recip)
         bool=True
         QuesComment.objects.create(
             comment_text=comment_text,
@@ -73,13 +76,14 @@ def savecomment2(request):
         subject ='New comment!'
         message = f'Hi {question.postedBy}, Someone commented on your question {question.quesText}!'
         email_from = settings.EMAIL_HOST_USER 
-        recipient_list = [request.user.email, ] 
+        recipient_list = [recipient.email, ] 
         send_mail( subject, message, email_from, recipient_list )
 
 
 
     return HttpResponse(json.dumps({'commment':comment_text,'quesid':quesid,'postedby':posted_by,'bool':True}), content_type="application/json")   
 
+#Filter topic Science
 def home2(request):
     if 'search' in request.GET:
         search=request.GET['search']
@@ -89,6 +93,7 @@ def home2(request):
         que=Question.objects.filter(topic="Science").order_by('-id')
     return render(request,'index.html',{'que':que})
 
+#Filter topic Social Science
 def home3(request):
     if 'search' in request.GET:
         search=request.GET['search']
@@ -97,6 +102,7 @@ def home3(request):
         que=Question.objects.filter(topic="Social Science").order_by('-id')
     return render(request,'index.html',{'que':que})
 
+#Fiter topic Language and Literature
 def home4(request):
     if 'search' in request.GET:
         search=request.GET['search']
@@ -106,6 +112,7 @@ def home4(request):
         que=Question.objects.filter(topic="Language and Literature").order_by('-id')
     return render(request,'index.html',{'que':que})
 
+#Filter topic Miscellaneous
 def home5(request):
     if 'search' in request.GET:
         search=request.GET['search']
@@ -117,7 +124,7 @@ def home5(request):
 
 
 
-
+#Login 
 def login(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -136,7 +143,7 @@ def login(request):
     else:
         return render(request,'login.html')
 
-
+#Register Tutor
 def registerTutor(request):
 
     if request.method == 'POST':
@@ -181,6 +188,7 @@ def registerTutor(request):
     else:
         return render(request,'register.html')
 
+#registration of student
 def registerStudent(request):
 
     if request.method == 'POST':
@@ -221,7 +229,7 @@ def registerStudent(request):
     else:
         return render(request,'register.html')
 
-
+#logout
 def logout(request):
     auth.logout(request)
     return redirect('/home')
@@ -240,7 +248,10 @@ def dashboard(request):
         print(workOn)
         return render(request,'Tdashboard.html',{'que':que,'workOn':workOn,'det':det,'que2':que2})
  else:
-        return render(request,'Sdashboard.html')
+        que2=Question.objects.filter(answered=False,expired=False,postedBy=curruser).order_by('-id')
+        que3=Question.objects.filter(answered=True,postedBy=curruser).order_by('-id')
+        que4=Question.objects.filter(expired=True,postedBy=curruser).order_by('-id')
+        return render(request,'Sdashboard.html',{'det':det,'que2':que2,'que3':que3})
 
 #This function is called when tutor clicks on Accept and Save
 def dashboard2(request,id):

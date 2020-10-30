@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,22 +16,35 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Dashboard</a>
+    <a class="navbar-brand" href="">Hi {{det.userName}}!</a>
   
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li >
+            {% if det.profilepic %}
+            <img src="{{det.profilepic.url}}" style="width: 60px;height: 60px;border-radius: 50%;float: right;">
+            {% endif %}
+            
+          </li>
             <li class="nav-item">
         <button class="openbtn" onclick="openNav()">&#9776;</button>
             </li>
-        <!-- <li class="nav-item ">
-          <a class="nav-link" href="#">icon <span class="sr-only">(current)</span></a>
-        </li> -->
+        
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="material-icons">&#xe7ff;</i></a>
+          <a class="nav-link" href="/home">Home<i class="material-icons">&#xe7ff;</i></a>
         </li>
         <li class="nav-item">
             
-            <a class="nav-link" href="#"><i class="material-icons">&#xe8b8;</i></a>
+            <a class="nav-link" href="/dashboard/settings">update profile<i class="material-icons">&#xe8b8;</i></a>
+          </li>
+          
+          <li class="nav-item"  style="float: right;">
+            <a class="nav-link" href="/logout">Logout</a>
+            
+          </li>
+          <li class="nav-item">
+            
+            <a class="nav-link" href="/dashboard/question">Ask a question</a>
           </li>
        </ul>
     </div>
@@ -52,37 +66,63 @@
       </div>
       <div class="flex-container">
 
-      
-        <div class="list-group" id="recent topics" style="flex-grow: 5; background-color: #edeae5;"> Recent Topics visited 
+      <!--questions which are posted but not answered-->
+        <div class="list-group" id="Pending" style="flex-grow: 5; background-color: #edeae5;"> <h3 style="color:#026670;">Pending Questions </h3>
             
-                <a href="#" class="list-group-item list-group-item-action">
+               
+                  {% for i in que2 %}
+                  <a href="" class="list-group-item list-group-item-action">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 1</h5>
-                    <small>1 day ago</small>
+                    
+                    <h5 class="mb-1">{{i.quesText}}</h5>
+                    <small>{{i.time|naturaltime}}</small>
                   </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus.</p>
-                  <small>Donec id elit non mi porta.</small>
+                 
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 2</h5>
-                    <small class="text-muted">3 days ago</small>
-                  </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                  <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Topic 3</h5>
-                    <small class="text-muted">3 days ago</small>
-                  </div>
-                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                  <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
+                {% endfor %}
               </div>
-            </div>
+              </div>
+
           <br>
-          <div><button type="button" class="btn btn-outline-secondary"><a href="dashboard/question">Ask a Question!</a></button></div>
+          <!---Questions which are posted by him and answered-->
+          <div id='answered'>
+
+            <div class="list-group" id="recent" style="flex-grow: 5; background-color: #edeae5;"> <h3 style="color:#026670;">Questions Answered </h3>
+            
+               
+              {% for i in que3 %}
+              <a href="solution/{{i.id}}" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                
+                <h5 class="mb-1">{{i.quesText}}</h5>
+                <small>{{i.time|naturaltime}}</small>
+              </div>
+              <p class="mb-1">Answered by: {{i.acceptedBy}}</p>
+              <small class="mb-2"><a href="/solution/{{i.id}}">See  answer</a></small>
+            </a>
+            {% endfor %}
+          </div>
+
+          </div>
+          <!--question asked by him but expired -->
+          <div id='expired'>
+          <h7>Expired</h7>
+          <div class="list-group" id="expired" style="flex-grow: 5; background-color: #edeae5;"> <h3 style="color:#026670;">Expired Questions </h3>
+            
+               
+            {% for i in que4 %}
+            <a  class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              
+              <h5 class="mb-1">{{i.quesText}}</h5>
+              <small>{{i.time|naturaltime}}</small>
+            </div>
+            <p class="mb-1">posted by: {{i.postedBy}}</p>
+            
+          </a>
+          {% endfor %}
+        </div>
+      </div>
 <!--Dashboard sidebar-->
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
