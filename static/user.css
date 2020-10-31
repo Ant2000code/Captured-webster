@@ -1,11 +1,34 @@
+/* navbar css */
+.profile{
+    height:60px;
+    width:60px;
+    border-radius: 50%;
+  }
+  
+  .navbar-nav{
+    display: inline;
+    width: 100%;
+  }
+  
+  .nav-item{
+    display: inline-block;
+  }
+  
+
+
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.disabledTextInput{
+    float: right;
+    margin-right: 0;
+}
   .form
   {
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: 500px;
-    max-height: 500px;
+    max-width: 1000px;
+    max-height: 1000px;
     margin: 50px auto 100px;
     padding: 50px;
     text-align: center;
@@ -15,7 +38,7 @@
     font-family: "Roboto", sans-serif;
     outline: 0;
     background: #f2f2f2;
-    width: 100%;
+    width: 80%;
     border: 0;
     margin: 0 0 15px;
     padding: 15px;
@@ -52,10 +75,10 @@
 
   body {
     background: #026670; /* fallback for old browsers */
-    background: -webkit-linear-gradient(right, #026670, #9FEDD7);
-    background: -moz-linear-gradient(right, #026670, #9FEDD7);
-    background: -o-linear-gradient(right, #026670, #9FEDD7);
-    background: linear-gradient(to left, #026670, #9FEDD7);
+    background: -webkit-linear-gradient(right, #edeae5, #edeae5);
+    background: -moz-linear-gradient(right, #edeae5,#edeae5);
+    background: -o-linear-gradient(right, #edeae5, #edeae5);
+    background: linear-gradient(to left, #edeae5, #edeae5);
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

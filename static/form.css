@@ -38,11 +38,13 @@ body {margin: 0;
     background: rgba(255,255,255,.1); 
     border: none; 
     border-radius: 4px; 
-    font-size: 16px; 
+    font-size: 20px; 
     margin: 0; 
     outline: 0; 
+    
     padding: 10px; 
-    width: 100%; 
+    width: 20%; 
+    height: 20px;
     box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
     -moz-box-sizing: border-box; 
@@ -53,8 +55,14 @@ body {margin: 0;
     margin-bottom: 30px; 
     } 
 
+    #answer
+    {
+      height:400px;
+      width:100%;
+    }
     .form-style input[type="text"]:focus, 
     .form-style input[type="number"]:focus, 
+   
    
     .form-style select:focus{ 
     background: #d2d9dd; 
@@ -68,7 +76,7 @@ body {margin: 0;
     .form-style select
     { 
     -webkit-appearance: menulist-button; 
-    height:35px; 
+    height:50px; 
     } 
     .form-style .number 
     { 
@@ -96,7 +104,8 @@ body {margin: 0;
     font-size: 18px; 
     text-align: center; 
     font-style: normal; 
-    width: 100%; 
+    width: 30%; 
+    
     border: 1px solid #026670; 
     border-width: 1px 1px 3px; 
     } 
@@ -164,10 +173,14 @@ body {margin: 0;
     }
     
     input,
+
     label {
-        margin: .4rem 0;
+        margin: .5rem 0;
     }
 
+    option{
+      height: 20px;
+    }
     #submit{
       
       margin-left:20px;
