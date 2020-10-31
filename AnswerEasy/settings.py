@@ -90,8 +90,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Web20',
         'USER':'root',
-        'PASSWORD':'',
-        'HOST':'localhost',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '3306',
 
     }

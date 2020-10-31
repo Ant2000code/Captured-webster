@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'login_register.css' %}">
 </head>
 <body>
@@ -18,9 +18,15 @@
 
         {% csrf_token %}
 
+        <div class="input-container">
+        <i class="fa fa-user icon fa-lg"></i>
         <input type="text" name="username" placeholder="Username"><br>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-key icon fa-lg"></i>
         <input type="password" name="password" placeholder="Password"><br>
-        <input type="submit">
+        </div>
+        <button type="submit" class="submit" >Sign In</button>
 
       </form>
 

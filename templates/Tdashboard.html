@@ -8,7 +8,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'home.css' %}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+<script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 <body>
   <div id='main'>
       <!-- Dashboard navigation bar -->
@@ -16,16 +20,16 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <a class="logo" href="#">
+      <div class="logo">
+            <img style="size:small"src="{% static 'logo.png' %}" width="100" >
+      </div>
+     </a>
     <a class="navbar-brand" href="">Hi {{det.userName}}!</a>
   
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li >
-            {% if det.profilepic %}
-            <img src="{{det.profilepic.url}}" style="width: 60px;height: 60px;border-radius: 50%;float: right;">
-            {% endif %}
-            
-          </li>
+          
             <li class="nav-item">
         <button class="openbtn" onclick="openNav()">&#9776;</button>
             </li>
@@ -33,17 +37,23 @@
           <a class="nav-link" href="#">icon <span class="sr-only">(current)</span></a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link" href="/home">home<i class="material-icons">&#xe7ff;</i></a>
+          <a class="nav-link" href="/home">Home <i class="fa fa-home fa-lg"></i></a>
         </li>
         <li class="nav-item">
             
-            <a class="nav-link" href="/dashboard/settings">update profile<i class="material-icons">&#xe8b8;</i></a>
+            <a class="nav-link" href="/dashboard/settings">Update Profile <i class="fa fa-user-cog fa-lg"></i></a>
             
           </li>
           
+         
           <li class="nav-item"  style="float: right;">
-            <a class="nav-link" href="/logout">Logout</a>
+            {% if det.profilepic %}
+            <img class="profile" src="{{det.profilepic.url}}" style="width: 60px;height: 60px;border-radius: 50%;float: right;">
+            {% endif %}
             
+          </li>
+          <li class="nav-item" style="float: right;" >
+            <a class="nav-link" href="/logout">Logout <i class="fa fa-sign-out-alt fa-lg"></i></a>
           </li>
        </ul>
     </div>
@@ -51,17 +61,12 @@
 <!--components of page-->
 <div class="flex-container">
 
-      
-    <div  style="flex-grow: 5; background-color: white;"> 
-        <img src="graph.PNG" width="100%" height="500px">
-        
-            
+    <div  style="background-color: white;"> 
+        <img src="{%static 'graph.PNG'%}" width="100%" height="100%">
           </div>
-          
-             <div class="extrainfo" style="flex-grow: 2; background-color:#15a7b5;">
+             <div class="extrainfo" style="flex-grow: 2; background-color:#FEF9C7; color:black;">
             yaha pe stars aur achievements wgera ayegi</div>
-             <div class="extrainfo" style="flex-grow: 2; background-color: #15a7b5;"></div>
-              
+        
       </div>
       <div class="flex-container">
 
@@ -77,14 +82,15 @@
                     <small>{{i.time|naturaltime}}</small>
                   </div>
                   <p class="mb-1">posted by: {{i.postedBy}}</p>
-                  <small class="mb-2"><a href="/solution/{{i.id}}">See  answer</a></small>
+                  <a class="ans" href="/solution/{{i.id}}">See  answer</a> 
                 </a>
                 {% endfor %}
               </div>
-            </div>
-          <br>
-          <div id="notify" >
-              <h5>Notifications!</h5>
+            </div><br><br>
+          
+          <section>
+          <div id="notify">
+              <h4><i class="fa fa-bell"></i> Notifications!</h4>
               {% for i in que %}
               {% if i.accepted == False %}
               {% if i.expired == False %}
@@ -92,39 +98,36 @@
                 <h5>{{i.topic}}</h5>
                 <br>
                 <h6>{{i.quesText}}</h6>
-                </div>
-                <div class="btn-group" role="group" aria-label="Basic example">
-              
-                 
-              
-                <button type="submit" class="btn btn-dark my-3" ><b><a href="dashboard/save/{{i.id}}">Accept and save</a></b></button>
-                <button type="button" class="btn btn-dark my-3" ><b><a href="dashboard/answer/{{i.id}}">Accept and Answer</a></b></button>
-                
+            </div>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="submit" class="btn  my-3" ><a href="dashboard/save/{{i.id}}" ><b>Accept and save</a></b></button>
+                <button type="button" class="btn  my-3" ><a href="dashboard/answer/{{i.id}}"><b>Accept and Answer</a></b></button> 
               </div>
-               <br><br>
+            
+               <br>
                {% endif %}
               {% endif %}
               {% endfor %}
-               <br>
-                      
-              </div>     
-              
+               <br>             
+          </div>   
+        </section>  
+            <hr>  
             <div>
-          <div id='current'>
+          <div id='current' >
             {% for i in que %}
             {% if i.id == workOn %}
-            <h5>
-            Working on:{{ i.quesText }}
-            </h5>
-            <button ><a href="dashboard/Answer/{{workOn}}">Answer</a></button>
+            <h4> <i class="fa fa-tools"></i> Working on:</h4> <h5> {{ i.quesText }}</h5>
+            
+            <button class="working" style="margin: 10px;" ><a href="dashboard/Answer/{{workOn}}">Answer</a></button>
 
             {% endif %}
             {% endfor %}
             </div>
-            
             </div>
-            <div id="expired">
-              <h3>Expired questions</h3>
+
+            <hr>
+            <div id="expired" d>
+              <h4><i class="fa fa-info"></i> Expired questions</h4>
               {% for i in que %}
               {% if i.acceptedBy == request.user.username %}
                {% if i.expired == True %}
@@ -139,6 +142,7 @@
                 {% endif %}
                 {% endfor %}
             </div>
+
 <!--Dashboard sidebar-->
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

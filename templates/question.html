@@ -24,7 +24,13 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="/dashboard">Dashboard</a>
+      <a class="logo" href="#">
+        <div class="logo">
+              <img style="size:small"src="{% static 'logo.png' %}" width="100" >
+        </div>
+       </a>
+       <a class="navbar-brand" href="#">Question</a>
+      <a class="navbar-brand" href="/dashboard">Dashboard <i class="fa fa-home fa-lg"></i></a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -43,14 +49,14 @@
         
     <!--Question Form-->
     <div id="content" class="form-style">
-    <link rel="stylesheet" href="question.css"> 
+      <link rel="stylesheet" href="{% static 'form.css' %}"> 
       <form action="" method="POST"> 
         {% csrf_token %}
 
         
         <legend>Question </legend> 
           
-          <textarea style="height:200px; width:100%;background-color:white; border:none" name="questxt" ></textarea>
+          <textarea style="height:200px; width:100%;background-color:#c1c6c7; border:none" name="questxt" ></textarea>
           <!--datalist-->
         <label for="topic">Choose a Topic:</label>
           <select id="topic" name="topic">
