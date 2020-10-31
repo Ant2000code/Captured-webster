@@ -14,19 +14,25 @@
     display: inline-block;
   }
   
-
+  #profilepic
+  {
+    width: 30%;
+    font-size: 18px;
+  }
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.disabledTextInput{
-    float: right;
-    margin-right: 0;
+
+.form-control
+{
+  margin-left: 20px;
 }
   .form
   {
     position: relative;
     z-index: 1;
     background: #FFFFFF;
+    border-radius: 1%;
     max-width: 1000px;
     max-height: 1000px;
     margin: 50px auto 100px;
@@ -72,6 +78,9 @@
     text-decoration: none;
   }
 
+  .input-container > i{
+    padding: 5px;
+  }
 
   body {
     background: #026670; /* fallback for old browsers */
