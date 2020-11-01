@@ -14,9 +14,27 @@
      <!-- Sign up form -->
      <form class="form" action="login" method="POST">
 
-        <h2 class="title">Sign In</h2>
+        <a class="logo" href="#">
+            <div class="logo">
+                  <img style="size:small"src="{% static 'logo.png' %}" width="100" >
+            </div>
+           </a>
+        <h2 class="title" style="padding: 0 0 10px 0; margin: 0;">Sign In</h2>
 
         {% csrf_token %}
+
+        <div class="col">
+            <a href="#" class="fb btn">
+              <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+             </a>
+            <a href="#" class="twitter btn">
+              <i class="fa fa-twitter fa-fw"></i> Login with Twitter
+            </a>
+            <a href="#" class="google btn"><i class="fa fa-google fa-fw">
+              </i> Login with Google+
+            </a>
+          </div>
+
 
         <div class="input-container">
         <i class="fa fa-user icon fa-lg"></i>
@@ -27,7 +45,7 @@
         <input type="password" name="password" placeholder="Password"><br>
         </div>
         <button type="submit" class="submit" >Sign In</button>
-
+        
       </form>
 
       <div>
