@@ -4,8 +4,10 @@
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: 500px;
-    max-height: 800px;
+    height:1000px;
+    width:800px;
+    /* max-width: 500px;
+    max-height: 900px; */
     margin: 50px auto 100px;
     padding: 50px;
     text-align: center;
