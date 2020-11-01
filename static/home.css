@@ -49,7 +49,7 @@ background-size: cover;
   color: white;
   margin: 10px;
   padding:20px;
-  height:500px;
+  
   width:500px;
 }
 #notify ,#current,#expired{
@@ -136,7 +136,43 @@ background-color: #026670;
 #main {
   transition: margin-left .5s; /* If you want a transition effect */
 }
-
+.rating {
+  width: 226px;
+  margin: 0 auto 1em;
+  font-size: 40px;
+  overflow: hidden;
+}
+.rating input {
+  float: right;
+  opacity: 0;
+  position: absolute;
+}
+.rating a,
+.rating label {
+  float: right;
+  color: #aaa;
+  text-decoration: none;
+  -webkit-transition: color 0.4s;
+  -moz-transition: color 0.4s;
+  -o-transition: color 0.4s;
+  transition: color 0.4s;
+}
+.rating label:hover ~ label,
+.rating input:focus ~ label,
+.rating label:hover,
+.rating a:hover,
+.rating a:hover ~ a,
+.rating a:focus,
+.rating a:focus ~ a {
+  color: orange;
+  cursor: pointer;
+}
+.rating {
+  direction: rtl;
+}
+.rating a {
+  float: none;
+}
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}

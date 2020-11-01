@@ -5,12 +5,13 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User,auth
 from django.db.models import Count, F, Value
-from .forms import QuestionForm
+
 from datetime import datetime,date
 from django.utils.timezone import utc
 from django.conf import settings
 from django.core.mail import send_mail
 import json
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 # Create your views here.
@@ -287,26 +288,64 @@ def dashboard2(request,id):
          return redirect('dashboard')
       else:
          return redirect('dashboard')
-    
+
+
+def Rate1(request,id):
+        
+    ques=Question.objects.get(pk=id)
+    ques.rating=1
+    ques.save(update_fields=["rating"])
+    return redirect('/dashboard')   
+
+def Rate2(request,id):
+        
+    ques=Question.objects.get(pk=id)
+    ques.rating=2
+    ques.save(update_fields=["rating"])
+    return redirect('/dashboard')
+
+def Rate3(request,id):
+        
+    ques=Question.objects.get(pk=id)
+    ques.rating=3
+    ques.save(update_fields=["rating"])
+    return redirect('/dashboard')
+
+def Rate4(request,id):
+        
+    ques=Question.objects.get(pk=id)
+    ques.rating=4
+    ques.save(update_fields=["rating"])
+    return redirect('/dashboard')
+
+def Rate5(request,id):
+        
+    ques=Question.objects.get(pk=id)
+    ques.rating=5
+    ques.save(update_fields=["rating"])
+    return redirect('/dashboard')
+
    #Get user settings
 def settingS(request):
     curruser=request.user.username
     det=Detail.objects.get(userName=curruser)
+    user=request.user
     if request.method =='POST':
        img=request.FILES['profilepicture']
        det.profilepic=img
        det.save(update_fields=["profilepic"])
        return redirect('/dashboard/settings')
     else:
-       return render(request,'userSettings.html',{'det':det})     
+       return render(request,'userSettings.html',{'det':det,'user':user})     
         
 
 
 def Askquestion(request):
-    form=QuestionForm
+    
     if request.method == 'POST':
         quesText=request.POST['questxt']
-        quesImg=request.POST['image']
+        #quesImg=request.FILES['picture']
+        #attachment=request.FILES['FiLe']
         topic=request.POST['topic']
         postedBy=request.user.username
         curruser=request.user.username
@@ -318,7 +357,9 @@ def Askquestion(request):
             topic=topic,
             quesText=quesText,
             postedBy=postedBy,
-            quesImg=quesImg
+            #quesImg=quesImg,
+            #attachment=attachment
+
         )
         det.quesNo=F('quesNo')+1
         det.save(update_fields=["quesNo"])
@@ -332,16 +373,20 @@ def Askquestion(request):
         return redirect('dashboard')
 
     else: 
-      return render(request,'question.html',{'form':form})
+      return render(request,'question.html')
 
 
 #When Answer is called directly
 def answer(request,id):
 
     if request.method=='POST':
-        
+        #try:
+             #is_private = request.POST['is_private']
+        #except MultiValueDictKeyError:
+             #is_private = False
+
         ansText=request.POST['answertxt']
-        ansImg=request.POST['image']
+        #ansImg=request.FILES['image']
         answeredBy=request.user.username
         curruser=request.user.username
         det=Detail.objects.get(userName=curruser)
@@ -351,7 +396,7 @@ def answer(request,id):
             question=que,
             ansText=ansText,
             answeredBy=answeredBy,
-            ansImg=ansImg
+            #ansImg=ansImg
         )
         det.ansNo=F('ansNo')+1
         det.workingOn=0

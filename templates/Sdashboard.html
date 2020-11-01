@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="{% static 'home.css' %}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+src="https://kit.fontawesome.com/64d58efce2.js"
+crossorigin="anonymous"
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
   ></script>
@@ -17,10 +20,8 @@
   <div id='main'>
       <!-- Dashboard navigation bar -->
  <nav class="navbar navbar-expand-sm navbar-dark " style="background-color:#026670;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="logo" href="#">
+
+    <a class="logo" href="/home">
       <div class="logo">
             <img style="size:small"src="{% static 'logo.png' %}" width="100" >
       </div>
@@ -35,9 +36,9 @@
             {% endif %}
             
           </li>
-            <li class="nav-item">
-        <button class="openbtn" onclick="openNav()">&#9776;</button>
-            </li>
+          <li class="nav-item">
+            <button class="openbtn" onclick="openNav()">&#9776;</button>
+                </li>
         
         <li class="nav-item">
           <a class="nav-link" href="/home">Home <i class="fa fa-home fa-lg"></i></a>
@@ -64,8 +65,11 @@
   <div  style="background-color: white;"> 
     <img src="{%static 'graph.PNG'%}" width="100%" height="100%">
       </div>
-      <div class="extrainfo" style="flex-grow: 2; background-color:#FEF9C7; color:black;">
-        yaha pe stars aur achievements wgera ayegi</div>
+      <div class="list-group" style="flex-grow: 2; background-color:#FEF9C7; color:black;">
+        <h3 style="color:#026670;">No. of Questions Asked by me: {{det.quesNo}}</h3>
+        
+      
+      </div>
              
               
       </div>
@@ -101,15 +105,25 @@
                 
                 <h5 class="mb-1">{{i.quesText}}</h5>
                 <small>{{i.time|naturaltime}}</small>
-              </div>
+                </div>
               <p class="mb-1">Answered by: {{i.acceptedBy}}</p>
-              <a class="ans" href="/solution/{{i.id}}">See  answer</a>
-            </a>
+              <a class="ans" href="/solution/{{i.id}}">See  answer</a></a>
+              <!-- rating -->
+       {% if i.rating == 0   %}
+      <div class="rating" onclick="submit">
+		      <a href="/rate5/{{i.id}}" title="Give 5 stars" type="submit">★</a>
+		    <a href="/rate4/{{i.id}}" title="Give 4 stars" type="submit">★</a>
+		    <a href="/rate3/{{i.id}}" title="Give 3 stars"  type="submit">★</a>
+		    <a href="/rate2/{i.id}}" title="Give 2 stars"   type="submit">★</a>
+		<a href="/rate1/{{i.id}}" title="Give 1 star" type="submit">★</a>
+  </div>
+  {% endif %}
+            
             {% endfor %}
           </div>
           </div><br><br>
           
-          <hr>
+        <hr>
           <!--question asked by him but expired -->
           <div id='expired'>
             
@@ -138,15 +152,17 @@
     <a href="#">Activity</a>
   </div>
 </div>
-  <script>
-    function openNav() {
-      document.getElementById("mySidebar").style.width = "250px";
-      document.getElementById("main").style.marginLeft = "250px";
-    }
-    
-    function closeNav() {
-      document.getElementById("mySidebar").style.width = "0";
-      document.getElementById("main").style.marginLeft= "0";
-    }
-    
-    </script>
+<script>
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+  
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
+  
+
+  </script>
+</body>

@@ -20,7 +20,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="logo" href="#">
+    <a class="logo" href="/home">
       <div class="logo">
             <img style="size:small"src="{% static 'logo.png' %}" width="100" >
       </div>
@@ -65,7 +65,10 @@
         <img src="{%static 'graph.PNG'%}" width="100%" height="100%">
           </div>
              <div class="extrainfo" style="flex-grow: 2; background-color:#FEF9C7; color:black;">
-            yaha pe stars aur achievements wgera ayegi</div>
+            <h3 style="color:#026670;">No. of Questions Answered : {{det.ansNo}}</h3>
+            <h3 style="color:#026670;">Average Rating :</h3>
+            <h3 style="color:#026670;">Current Badge:</h3>
+          </div>
         
       </div>
       <div class="flex-container">
