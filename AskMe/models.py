@@ -10,6 +10,8 @@ class Detail(models.Model):
     profilepic=models.ImageField(upload_to='pictures',default="",blank=True,null=True)
     workingOn=models.IntegerField(default=0)
 
+def __str__(self): 
+         return ""+self.userName
 
 class Question(models.Model):
     topic=models.CharField(max_length=300,default="")
@@ -19,9 +21,10 @@ class Question(models.Model):
     accepted=models.BooleanField(default=False)
     acceptedBy=models.CharField(max_length=50, default="",null=False,blank=True)
     answered=models.BooleanField(default=False)
-    #tag=
     expired=models.BooleanField(default=False)
     quesImg=models.ImageField(upload_to='quesimages',default="",blank=True,null=True)
+    rating=models.IntegerField(default=0)
+    attachment=models.FileField(upload_to='quesfiles',default="",blank=True,null=True)
     
      
 class Answer(models.Model):
@@ -30,7 +33,8 @@ class Answer(models.Model):
     answeredBy=models.CharField(max_length=50,default="",null=False,blank=False)
     time=models.DateTimeField(auto_now_add=True)
     ansImg=models.ImageField(upload_to='ansimages',default="",blank=True,null=True)
-
+    rating=models.IntegerField(default=0)
+    attachment=models.FileField(upload_to='ansfiles',default="",blank=True,null=True)
     
 class AnsComment(models.Model):
     answer=models.ForeignKey(Answer,on_delete=models.CASCADE)

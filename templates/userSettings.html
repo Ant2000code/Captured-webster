@@ -53,27 +53,30 @@
   </div>
 </nav>
 
-  <form class="form">
+  <div class="form">
     {% if det.profilepic %}
     <img src="{{det.profilepic.url}}" style="height: 200px; width: 200px; border-radius: 10%;">
     {% else %}
     <img src="">
     {% endif %}
 
-    {% csrf_token %}
-    <form>
+    
       <form  action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
        <br>
         <input type="file" id="profilepic" name="profilepicture" accept="image/png, image/jpeg , image/jpg" >
-        <button type="submit" class="btn btn-primary" style="margin:20px; width:10%;">Submit</button>
+        <button type="submit" class="btn btn-primary" style="margin:20px; width:50%;">Update Profile Picture</button>
         <hr>
-        <fieldset disabled>
+      </form>
+        <fieldset >
           <div class="input-container">
             <i class="fa fa-user fa-lg"></i>
-            <label for="disabledTextInput">User Name</label>
-            <input type="text" id="disabledTextInput" class="form-control" placeholder="{{det.username}}" style="margin-left: 20px;">
-          </div>
+            <label for="disabledTextInput"></label>
+            <div id="disabledTextInput" class="disabled" style="margin-left: 20px;"><p>{{det.userName}}</p></div>
+            </div>
           <hr>
+          <!---
           <div class="input-container">
             <i class="fa fa-user-edit fa-lg" ></i>
             <label for="disabledTextInput">First Name </label>
@@ -86,22 +89,26 @@
             <input type="text" id="disabledTextInput" class="form-control" placeholder="Last Name" style="margin-left: 20px;">
           </div>
           <hr>
+          --->
         <div class="input-container">
           <i class="fa fa-envelope fa-lg"></i>
-          <label for="disabledTextInput">Email ID </label>
-           <input type="text" id="disabledTextInput" class="form-control" placeholder="Email ID" style="margin-left: 20px;">
+          <label for="disabledTextInput"></label>
+          <div id="disabledTextInput" class="disabled" style="margin-left: 20px;"><p>{{user.email}}</p></div>
+        </div>
         </div>
         <hr>
-        <div class="input-container">
+        <!--
+          <div class="input-container">
           <i class="fa fa-key fa-lg"></i>
           <label for="disabledTextInput">Password </label>
            <input type="text" id="disabledTextInput" class="form-control" placeholder="Password" style="margin-left: 20px;">
         </div>
+        -->
         
-          </form>
+        
+          
 </fieldset>
-</form>
 
     
-</form>
+</div>
 </body>

@@ -1,5 +1,6 @@
 
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 
 <html>
@@ -30,7 +31,7 @@
               <img style="size:small"src="{% static 'logo.png' %}" width="100" >
         </div>
        </a>
-      <a class="navbar-brand" href="#">Answer</a>
+      <a class="navbar-brand" >Answer</a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -48,11 +49,14 @@
     <!--Answer Form-->
     <div id="content" class="form-style">
     <link rel="stylesheet" href="{% static 'form.css' %}"> 
-      <form action="" method='POST'> 
+      <form action="" method='POST' enctype="multipart/form-data"> 
         {% csrf_token %}
         <fieldset> 
         <legend><span class="number"></span>Answer</legend> 
-          <h4>{{queId.quesText}}      {{queId.time}}</h4> 
+          <h4>{{queId.quesText}}      {{queId.time|naturaltime}}</h4> 
+          {% if queId.quesImg %}
+          <img src="{{queId.quesImg.url}}" style="height:300px; width:300px;padding-bottom: 10px;">
+          {% endif %}
           <textarea style="height:200px; width:100%;background-color:#c1c6c7; border:none" name="answertxt"></textarea>
           
         </fieldset> 

@@ -23,6 +23,11 @@ urlpatterns = [
     path('dashboard/settings',views.settingS,name='settingS'),
     path('solution/<int:id>', views.solution, name='solution'),
     path('savecomment',views.savecomment,name='savecomment'),
+    path('rate1/<int:id>',views.Rate1,name='Rate1'),
+    path('rate2/<int:id>',views.Rate2,name='Rate2'),
+    path('rate3/<int:id>',views.Rate3,name='Rate3'),
+    path('rate4/<int:id>',views.Rate4,name='Rate4'),
+    path('rate5/<int:id>',views.Rate5,name='Rate5'),
     path('savecommentques',views.savecomment2,name='savecomment2'),
     path('solution/logout', views.logout, name='logout')
     ]

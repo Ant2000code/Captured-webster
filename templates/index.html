@@ -22,7 +22,7 @@
             aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="logo" href="#">
+        <a class="logo" href="/home">
           <div class="logo">
                 <img style="size:small"src="{% static 'logo.png' %}" width="100" >
           </div>
@@ -69,8 +69,8 @@
     <div class="container" style="background-color: white;" >
       {% for i in que %}
       {% if i.answered == True %}
-        <div class="card" style="width:80%;">
-            <div class="card-body">
+        <div class="card" style="width:80%; padding:10px;">
+            <div class="card-body" style="width:80%; padding:10px;">
               <h5 class="card-title">{{i.topic}}</h5>
               <h6 class="card-subtitle mb-2 text-muted">posted by:{{i.postedBy}}</h6>
               <p class="card-text">{{i.quesText}}</p>
@@ -81,16 +81,21 @@
               {% else %}
               <a href="/login" class="card-link">See Answer</a>
               
+            
+          
               
-              
-              </div>
               {% endif %}
-              {% endif %}
-
             </div>
+            </div>
+              {% endif %}
+              
+
+            
+            <br>
+            {% endfor %}
           </div>
-         <br>
-         {% endfor %}
+         
+         
         
       </div>
 
@@ -103,8 +108,10 @@
         <div class="contentBx">
             <h2 class="heading">About the Content</h2>
             <p class="text">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ratione ullam, distinctio beatae excepturi incidunt voluptatibus quia dicta voluptate iure corporis dignissimos debitis expedita mollitia unde laudantium veniam? Laboriosam facilis voluptate numquam fugit non repudiandae officia provident magnam asperiores. Architecto nulla minima sed deserunt cum delectus in voluptates veniam officia voluptas a, quam quod harum odit soluta excepturi vel unde assumenda earum aliquam! Similique delectus ut perspiciatis tenetur. Quia sed eligendi incidunt qui doloremque voluptate!
-               </p>
+              Ask me anything is a plateform which tries its best to provide education to various students across the country on one hand and on the other hand it also provides a chance for people to work as a tutor and earn points and rewards based on their performance and ratings given by the students. The student and tutors have to simply make their accounts as per their field choices and then students are free to post their doubts regarding various topics that will circulate around tutors. They can post their doubts in the form of text as well as in the form of files as per gheir wish. The tutors will get notification as soon as the new question gets posted by the student. He further has an option to either accept the question or to delete or remove it if he doesnot know the answer or doesnt want to answer. He further has an option to either answer the question at the same time or to save it for the later. We have tried our best to help the students as early as possible so for this purpose timing to questions is also among the features of our website whereby the question remaums on the website for 24 hours and the tutors have to answer within the time duration. In case of failure, the rating of tutor gets affected. Also the students rate the work done by the tutor on the scale of 5 using which average rating of each tutor is calculated. This is all about yhe efforts we have done to make your learning as a student and earning as atutor easier. Do give us a try. We can make sure you won't regret your decision.
+              
+              
+            </p>
         </div>
 
         <img class="about"src="{% static 'about.jpeg' %}"  >
@@ -113,8 +120,15 @@
     
   
 
-      <section class="footer">
+      <section class="footer" id="contact">
         <p class="text">DESIGNED AND DEVELOPED BY TEAM CAPTURED</p>
+        <br>
+        <p >TEAM MEMBERS</p>
+        <br>
+        <p >ANCHAL TIWARI</p>
+        <p >DIVYANSHI AGRAWAL</p>
+        <p >MANSI SAHU</p>
+        <p >FOR ANY QUERIES MAIL AT capturedwebster@gmail.com</p>
 
         <div class="social-media">
             <a href="#" class="social-icon">
@@ -157,7 +171,7 @@
 <!--Dashboard sidebar-->
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="">Topics  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
+    <a href="/home">All  <i style='font-size:24px' class='far'>&#xf24d;</i></a>
     <a href="/home/Science">Science</a>
     <a href="/home/SocialScience">Social Science</a>
     <a href="/home/LanguageAndLiterature">Language and Literature</a>
@@ -165,9 +179,7 @@
   </div>
 
   <script>
-    $("#opencomments").click(function(){
-        $(".comment-wrapper").slideToggle();
-    });
+    
     function openNav() {
       document.getElementById("mySidebar").style.width = "250px";
       document.getElementById("main").style.marginLeft = "250px";

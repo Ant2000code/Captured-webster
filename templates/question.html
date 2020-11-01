@@ -24,7 +24,7 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="logo" href="#">
+      <a class="logo" href="/home">
         <div class="logo">
               <img style="size:small"src="{% static 'logo.png' %}" width="100" >
         </div>
@@ -34,9 +34,6 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <button class="openbtn" onclick="openNav()">&#9776;</button>
-          </li>
           
           
         </ul>
@@ -50,7 +47,7 @@
     <!--Question Form-->
     <div id="content" class="form-style">
       <link rel="stylesheet" href="{% static 'form.css' %}"> 
-      <form action="" method="POST"> 
+      <form action="" method="POST" enctype="multipart/form-data"> 
         {% csrf_token %}
 
         
@@ -59,7 +56,7 @@
           <textarea style="height:200px; width:100%;background-color:#c1c6c7; border:none" name="questxt" ></textarea>
           <!--datalist-->
         <label for="topic">Choose a Topic:</label>
-          <select id="topic" name="topic">
+  <select id="topic" name="topic">
     <option value="Science">Science</option>
     <option value="Social Science">Social Science</option>
     <option value="Language and Literature">Language and Literature</option>
@@ -68,11 +65,15 @@
           
           
 
-      <!--adding image of questions-->
+      <!--adding image and file of questions-->
       <label for="image">Uploade image of question:</label>
       <input type="file"
-        id="image" name="image"
+        id="image" name="picture"
         accept="image/png, image/jpeg , image/jpg">
+        <label for="file">Upload Attachment:</label>
+        <input type="file"
+        id="FiLe" name="FiLe"
+        accept="application/pdf, application/docx , application/txt">
       <input onclick="myFunction()" type="submit" value="Submit" /> 
       </form>
     </div> 
