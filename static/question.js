@@ -1,17 +1,18 @@
-function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-  }
-  
-  function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+
+ /*validation*/
+  function validate(){
+      var ques =document.getElementById("question");
+      if(ques.value.trim()=="")
+      {
+        alert("Blank Question");
+        return false;
+      }
+
+      alert("Question has been Submitted");
+      return true;
   }
 
-  function myFunction(){
-      
-      alert("Question has been Submitted");
-  }
+  
   var doc = new jsPDF(); 
   var specialElementHandlers = { 
   '#editor': function (element, renderer) { 

@@ -21,17 +21,16 @@ body {margin: 0;
   }
 
 .container{
-
   align-self: center;
   padding-left: 100px;
 }
-  .card{
-  background-color: ivory;
+.card{
+background-color: ivory;
 
-  box-shadow: #026670 2px 2px 2px 2px;
+box-shadow: #026670 2px 2px 2px 2px;
 
-  }
-
+}
+  
   .forms{
   width:500px;
   height:700px;
@@ -46,7 +45,7 @@ body {margin: 0;
 
 .contentBx
 {
-
+  
   background: #5cbda1;
   padding: 50px;
   display: block;

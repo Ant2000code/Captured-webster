@@ -48,12 +48,12 @@
     <!--Answer Form-->
     <div id="content" class="form-style">
     <link rel="stylesheet" href="{% static 'form.css' %}"> 
-      <form action="" method='POST'> 
+      <form action="" method='POST' onsubmit="return validate()"> 
         {% csrf_token %}
         <fieldset> 
         <legend><span class="number"></span>Answer</legend> 
           <h4>{{queId.quesText}}      {{queId.time}}</h4> 
-          <textarea style="height:200px; width:100%;background-color:#c1c6c7; border:none" name="answertxt"></textarea>
+          <textarea style="height:200px; width:100%;background-color:#edeae5;" name="answertxt" placeholder="Answer" required></textarea>
           
         </fieldset> 
 
@@ -62,7 +62,7 @@
       <input type="file"
         id="image" name="image"
         accept="image/png, image/jpeg , image/jpg">
-      <input onclick="myFunction()" type="submit" value="Submit" /> 
+      <input type="submit" value="Submit" /> 
       </form>
     </div> 
 
