@@ -66,9 +66,10 @@
     </nav>
 
     
-    <div class="container" style="background-color: white;" >
+    
       {% for i in que %}
       {% if i.answered == True %}
+      <div class="container" style="background-color: white;" ></div>
         <div class="card" style="width:80%;">
             <div class="card-body">
               <h5 class="card-title">{{i.topic}}</h5>
@@ -81,11 +82,10 @@
               {% else %}
               <a href="/login" class="card-link">See Answer</a>
               
-              
+              {% endif %}
+              {% endif %}
               
               </div>
-              {% endif %}
-              {% endif %}
 
             </div>
           </div>
