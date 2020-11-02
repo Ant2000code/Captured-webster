@@ -238,7 +238,7 @@ def logout(request):
     auth.logout(request)
     return redirect('/home')
 
-
+#Normal dashboard
 def dashboard(request):
  curruser=request.user.username
  det=Detail.objects.get(userName=curruser)
@@ -271,21 +271,24 @@ def dashboard2(request,id):
          return redirect('dashboard')
     else:
       if det.workingOn==0:
-         que.accepted=True
-         curruser=request.user.username
-         que.acceptedBy=curruser
-         que.save(update_fields=["accepted"])
-         que.save(update_fields=["acceptedBy"])
-         det=Detail.objects.get(userName=curruser)
-         det.workingOn=id
-         det.save(update_fields=['workingOn'])
-         subject = 'Question accepted and saved!'
-         message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
-         email_from = settings.EMAIL_HOST_USER 
-         recipient_list = [request.user.email, ] 
-         send_mail( subject, message, email_from, recipient_list )
-         print(que.quesText)
-         return redirect('dashboard')
+        if que.accepted == False:
+          que.accepted=True
+          curruser=request.user.username
+          que.acceptedBy=curruser
+          que.save(update_fields=["accepted"])
+          que.save(update_fields=["acceptedBy"])
+          det=Detail.objects.get(userName=curruser)
+          det.workingOn=id
+          det.save(update_fields=['workingOn'])
+          subject = 'Question accepted and saved!'
+          message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
+          email_from = settings.EMAIL_HOST_USER 
+          recipient_list = [request.user.email, ] 
+          send_mail( subject, message, email_from, recipient_list )
+          print(que.quesText)
+          return redirect('dashboard')
+        else:
+          return redirect('dashboard') 
       else:
          return redirect('dashboard')
 
@@ -380,6 +383,9 @@ def Askquestion(request):
 def answer(request,id):
 
     if request.method=='POST':
+
+      que=Question.objects.get(pk=id)
+      if que.accepted == False:
         #try:
              #is_private = request.POST['is_private']
         #except MultiValueDictKeyError:
@@ -390,7 +396,7 @@ def answer(request,id):
         answeredBy=request.user.username
         curruser=request.user.username
         det=Detail.objects.get(userName=curruser)
-        que=Question.objects.get(pk=id)
+        
         
         ans=Answer.objects.create(
             question=que,
@@ -416,26 +422,34 @@ def answer(request,id):
         recipient_list = [request.user.email, ] 
         send_mail( subject, message, email_from, recipient_list )
         return redirect('dashboard')
-
+      else:
+        return redirect('dashboard')
     else:
 
        queId=Question.objects.get(pk=id)
-       now=datetime.utcnow().replace(tzinfo=utc)
-       timediff = now -queId.time
-       tf=timediff.total_seconds()>86400 #check 24 hour timer
-       curruser=request.user.username
-       det=Detail.objects.get(userName=curruser)
-       if tf==True:
-         queId.expired=True
-         queId.save(update_fields=['expired'])
-         det.workingOn=0
-         det.save(update_fields=['workingOn'])
-         return redirect('dashboard')
-       else:
-           if det.workingOn==0:
-              return render(request, 'answer.html',{'queId':queId})
-           else:
+       if queId.accepted == False:
+
+
+           now=datetime.utcnow().replace(tzinfo=utc)
+           timediff = now -queId.time
+           tf=timediff.total_seconds()>60 #check 24 hour timer
+           curruser=request.user.username
+           det=Detail.objects.get(userName=curruser)
+           if tf==True:
+
+              queId.expired=True
+              queId.save(update_fields=['expired'])
+              det.workingOn=0
+              det.save(update_fields=['workingOn'])
               return redirect('dashboard')
+           else:
+              if det.workingOn==0:
+               return render(request, 'answer.html',{'queId':queId})
+              else:
+               return redirect('dashboard')
+       else:
+            return redirect('dashboard')
+        
 
 
  #Answer page from already saved section
