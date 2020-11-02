@@ -432,7 +432,7 @@ def answer(request,id):
 
            now=datetime.utcnow().replace(tzinfo=utc)
            timediff = now -queId.time
-           tf=timediff.total_seconds()>60 #check 24 hour timer
+           tf=timediff.total_seconds()>86400 #check 24 hour timer
            curruser=request.user.username
            det=Detail.objects.get(userName=curruser)
            if tf==True:
