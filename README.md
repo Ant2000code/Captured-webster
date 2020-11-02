@@ -1,4 +1,4 @@
-<h1 align="center">Ampify</h1>
+<h1 align="center">Ask Me Anything</h1>
 
 > It's been long since Thanos perished half of the life,but Tony and Bruce are unable solve many unanswered questions.
 >To solve this issue,we have built a plateform where they can post questions and get answers.
