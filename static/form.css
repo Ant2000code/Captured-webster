@@ -68,9 +68,10 @@ body {margin: 0;
     } 
 
     textarea {
-      -webkit-border-radius: 5px;
+      border: none;
+      /* -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
-      border-radius: 5px;
+      border-radius: 5px; */
   }
     .form-style select
     { 

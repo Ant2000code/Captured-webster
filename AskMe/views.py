@@ -5,16 +5,60 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User,auth
 from django.db.models import Count, F, Value
-
 from datetime import datetime,date
 from django.utils.timezone import utc
 from django.conf import settings
 from django.core.mail import send_mail
 import json
 from django.utils.datastructures import MultiValueDictKeyError
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.shortcuts import render 
+from django.views.generic import View 
 
 
 # Create your views here.
+
+class HomeView(View): 
+    def get(self, request, *args, **kwargs): 
+        return render(request, 'charttest.html') 
+
+class ChartData(APIView): 
+    authentication_classes = [] 
+    permission_classes = [] 
+   
+    def get(self, request, format = None): 
+        
+        labels = [ 
+            'January', 
+            'February',  
+            'March',  
+            'April'
+            
+            ] 
+        chartLabel = "Answered"
+        curruser=request.user.username
+        aa=Question.objects.filter(answered=True,acceptedBy=request.user.username,topic="Science").count()
+        print(curruser)
+        print(aa)
+        sc=Question.objects.filter(answered=False,acceptedBy=request.user.username,topic="Science").count()
+        ssc=Question.objects.filter(answered=True,acceptedBy=request.user.username,topic="Social Science").count()
+        ll=Question.objects.filter(answered=True,acceptedBy=request.user.username,topic="Language and Literature").count()
+        m=Question.objects.filter(answered=True,acceptedBy=request.user.username,topic="Miscellaneous").count()
+        chartdata = []
+        chartdata.append(sc)
+        
+        chartdata.append(ssc)
+        chartdata.append(ll)
+        chartdata.append(m)
+
+        data ={ 
+                     "labels":labels, 
+                     "chartLabel":chartLabel, 
+                     "chartdata":chartdata, 
+             } 
+        return Response(data) 
+
 def home(request):
  if 'search' in request.GET:
         search=request.GET['search']
@@ -57,6 +101,8 @@ def savecomment(request):
 
     return HttpResponse(json.dumps({'commment':comment_text,'ansid':ansid,'postedby':posted_by,'bool':True}), content_type="application/json")
     #return JsonResponse({'bool':True})
+
+
 
 # Save comment on Question 
 def savecomment2(request):
@@ -248,6 +294,7 @@ def dashboard(request):
         
         que=Question.objects.all().order_by('-id')
         que2=Question.objects.filter(answered=True,acceptedBy=curruser).order_by('-id')
+        
         workOn=det.workingOn
         print(workOn)
         return render(request,'Tdashboard.html',{'que':que,'workOn':workOn,'det':det,'que2':que2})
@@ -255,7 +302,46 @@ def dashboard(request):
         que2=Question.objects.filter(answered=False,expired=False,postedBy=curruser).order_by('-id')
         que3=Question.objects.filter(answered=True,postedBy=curruser).order_by('-id')
         que4=Question.objects.filter(expired=True,postedBy=curruser).order_by('-id')
-        return render(request,'Sdashboard.html',{'det':det,'que2':que2,'que3':que3})
+        return render(request,'Sdashboard.html',{'det':det,'que2':que2,'que3':que3,'que4':que4})
+
+def check(request):
+    if request.method=='POST':
+        quesid=request.POST['ques_id']
+        que=Question.objects.get(pk=quesid)
+        now=datetime.utcnow().replace(tzinfo=utc)
+        timediff = now-que.time
+        tf=timediff.total_seconds()>86400
+        curruser=request.user.username
+        det=Detail.objects.get(userName=curruser)
+    if tf==True:
+         que.expired=True
+         que.save(update_fields=['expired'])
+         return HttpResponse(json.dumps({'bool':True,'save':0}), content_type="application/json")
+    else:
+      if det.workingOn==0:
+        if que.accepted == False:
+          que.accepted=True
+          curruser=request.user.username
+          que.acceptedBy=curruser
+          que.save(update_fields=["accepted"])
+          que.save(update_fields=["acceptedBy"])
+          det=Detail.objects.get(userName=curruser)
+          det.workingOn=quesid
+          det.save(update_fields=['workingOn'])
+        #   subject = 'Question accepted and saved!'
+        #   message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
+        #   email_from = settings.EMAIL_HOST_USER 
+        #   recipient_list = [request.user.email, ] 
+        #   send_mail( subject, message, email_from, recipient_list )
+        #   print(que.quesText)
+          return HttpResponse(json.dumps({'bool':True,'save':1}), content_type="application/json")
+    
+        else:
+          return HttpResponse(json.dumps({'bool':True,'save':2}), content_type="application/json") 
+      else:
+         return HttpResponse(json.dumps({'bool':True,'save':2}), content_type="application/json")
+
+
 
 #This function is called when tutor clicks on Accept and Save
 def dashboard2(request,id):
@@ -280,12 +366,12 @@ def dashboard2(request,id):
           det=Detail.objects.get(userName=curruser)
           det.workingOn=id
           det.save(update_fields=['workingOn'])
-          subject = 'Question accepted and saved!'
-          message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
-          email_from = settings.EMAIL_HOST_USER 
-          recipient_list = [request.user.email, ] 
-          send_mail( subject, message, email_from, recipient_list )
-          print(que.quesText)
+        #   subject = 'Question accepted and saved!'
+        #   message = f'Hi {curruser}, You saved question: {que.quesText}. You can check your current working question in your dashboard. Answer it within 24 hours or it will expire!'
+        #   email_from = settings.EMAIL_HOST_USER 
+        #   recipient_list = [request.user.email, ] 
+        #   send_mail( subject, message, email_from, recipient_list )
+        #   print(que.quesText)
           return redirect('dashboard')
         else:
           return redirect('dashboard') 
@@ -416,11 +502,11 @@ def answer(request,id):
         que.save(update_fields=["acceptedBy"])
         que.save(update_fields=["answered"])
         ans.save()
-        subject ='You Answered!'
-        message = f'Hi {curruser}, You answered question: {que.quesText}. All the best for future!'
-        email_from = settings.EMAIL_HOST_USER 
-        recipient_list = [request.user.email, ] 
-        send_mail( subject, message, email_from, recipient_list )
+        # subject ='You Answered!'
+        # message = f'Hi {curruser}, You answered question: {que.quesText}. All the best for future!'
+        # email_from = settings.EMAIL_HOST_USER 
+        # recipient_list = [request.user.email, ] 
+        # send_mail( subject, message, email_from, recipient_list )
         return redirect('dashboard')
       else:
         return redirect('dashboard')
@@ -446,9 +532,9 @@ def answer(request,id):
               if det.workingOn==0:
                return render(request, 'answer.html',{'queId':queId})
               else:
-               return redirect('dashboard')
+               return redirect('dashboard',{'taken':'on'})
        else:
-            return redirect('dashboard')
+            return render('dashboard',{'taken':'off'})
         
 
 

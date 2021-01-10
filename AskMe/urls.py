@@ -1,8 +1,10 @@
 
 from django.urls import path,include
 from . import views
+from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -29,7 +31,12 @@ urlpatterns = [
     path('rate4/<int:id>',views.Rate4,name='Rate4'),
     path('rate5/<int:id>',views.Rate5,name='Rate5'),
     path('savecommentques',views.savecomment2,name='savecomment2'),
-    path('solution/logout', views.logout, name='logout')
+    path('solution/logout', views.logout, name='logout'),
+    path('check',views.check,name='check'),
+     path('', views.HomeView.as_view()), 
+    # path('test-api', views.get_data), 
+    path('api', views.ChartData.as_view()), 
+
     ]
    
     
